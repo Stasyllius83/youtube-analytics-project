@@ -3,6 +3,7 @@ import os
 
 from googleapiclient.discovery import build
 
+
 class Channel:
     """Класс для ютуб-канала"""
     api_key: str = os.getenv('YT_API_KEY')
@@ -19,15 +20,34 @@ class Channel:
         self.video_count = self.channel['items'][0]['statistics']['videoCount']
         self.view_count = self.channel['items'][0]['statistics']['viewCount']
 
+    def __str__(self):
+        return f'{self.title} {self.url}'
+
+    def __add__(self, other):
+        return int(self.subscriber_count) + int(other.subscriber_count)
+
+    def __sub__(self, other):
+        return int(self.subscriber_count) - int(other.subscriber_count)
+
+    def __gt__(self, other):
+        return int(self.subscriber_count) > int(other.subscriber_count)
+
+    def __ge__(self, other):
+        return int(self.subscriber_count) >= int(other.subscriber_count)
+
+    def __lt__(self, other):
+        return int(self.subscriber_count) < int(other.subscriber_count)
+
+    def __le__(self, other):
+        return int(self.subscriber_count) <= int(other.subscriber_count)
+
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
         print(json.dumps(self.channel, indent=2, ensure_ascii=False))
 
-
     @property
     def channel_id(self):
         return self.__channel_id
-
 
     @channel_id.setter
     def channel_id(self, new_chann_id):
@@ -40,7 +60,6 @@ class Channel:
         api_key: str = os.getenv('YT_API_KEY')
         youtube = build('youtube', 'v3', developerKey=api_key)
         return youtube
-
 
     def to_json(self, file_json):
         json_data = {
