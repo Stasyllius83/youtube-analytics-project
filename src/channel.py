@@ -16,30 +16,30 @@ class Channel:
         self.title = self.channel['items'][0]['snippet']['title']
         self.description = self.channel['items'][0]['snippet']['description']
         self.url = f"https://www.youtube/channels/{self.__channel_id}"
-        self.subscriber_count = self.channel['items'][0]['statistics']['subscriberCount']
-        self.video_count = self.channel['items'][0]['statistics']['videoCount']
-        self.view_count = self.channel['items'][0]['statistics']['viewCount']
+        self.subscriber_count = int(self.channel['items'][0]['statistics']['subscriberCount'])
+        self.video_count = int(self.channel['items'][0]['statistics']['videoCount'])
+        self.view_count = int(self.channel['items'][0]['statistics']['viewCount'])
 
     def __str__(self):
         return f'{self.title} {self.url}'
 
     def __add__(self, other):
-        return int(self.subscriber_count) + int(other.subscriber_count)
+        return self.subscriber_count + other.subscriber_count
 
     def __sub__(self, other):
-        return int(self.subscriber_count) - int(other.subscriber_count)
+        return self.subscriber_count - other.subscriber_count
 
     def __gt__(self, other):
-        return int(self.subscriber_count) > int(other.subscriber_count)
+        return self.subscriber_count > other.subscriber_count
 
     def __ge__(self, other):
-        return int(self.subscriber_count) >= int(other.subscriber_count)
+        return self.subscriber_count >= other.subscriber_count
 
     def __lt__(self, other):
-        return int(self.subscriber_count) < int(other.subscriber_count)
+        return self.subscriber_count < other.subscriber_count
 
     def __le__(self, other):
-        return int(self.subscriber_count) <= int(other.subscriber_count)
+        return self.subscriber_count <= other.subscriber_count
 
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
@@ -72,4 +72,4 @@ class Channel:
             'viewCount': self.view_count
         }
         with open(file_json, 'w', encoding="utf-8") as f:
-            f.write(json.dumps(json_data))
+            f.write(json.dumps(json_data, ensure_ascii=False, indent=4))
